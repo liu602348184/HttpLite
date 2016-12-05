@@ -7,9 +7,22 @@
 //
 
 #include <iostream>
+#include "http_server.hpp"
+
+void sigfunc(int);
+HttpServer *http;
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
+    signal(SIGINT, sigfunc);
+    http = new HttpServer((char*)"0.0.0.0", 8002);
+    http->start();
+    
     return 0;
+}
+
+void sigfunc(int signo){
+    if(signo == SIGINT){
+        delete http;
+        exit(signo);
+    }
 }
